@@ -2,16 +2,13 @@ import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 const form = document.querySelector('.form');
-const btn = document.querySelector('button');
-btn.addEventListener('click', onSubmitBtn);
+form.addEventListener('submit', onSubmitBtn);
 
 function onSubmitBtn(e) {
-  e.preventDefault();
-
   let delay = Number(form.delay.value);
 
   createPromise(delay)
-    .then(({ delay }) => {
+    .then(delay => {
       iziToast.success({
         message: `✅ Fulfilled promise in ${delay}ms`,
         timeout: delay,
@@ -22,7 +19,7 @@ function onSubmitBtn(e) {
         messageColor: 'white',
       });
     })
-    .catch(({ delay }) => {
+    .catch(delay => {
       iziToast.error({
         message: `❌ Rejected promise in ${delay}ms`,
         timeout: delay,
@@ -33,18 +30,18 @@ function onSubmitBtn(e) {
         messageColor: 'white',
       });
     });
+  e.preventDefault();
 }
 
 function createPromise(delay) {
-  const obj = { delay };
-  const onResolve = form.state.value === 'fulfilled';
+  const isFulfilledState = form.state.value === 'fulfilled';
 
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (onResolve) {
-        resolve(obj);
+      if (isFulfilledState) {
+        resolve(delay);
       } else {
-        reject(obj);
+        reject(delay);
       }
     }, delay);
   });

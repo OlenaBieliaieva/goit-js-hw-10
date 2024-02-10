@@ -37,11 +37,6 @@ window.addEventListener('keydown', e => {
 
     inputDatePicker.removeAttribute('disabled');
     btnStart.setAttribute('disabled', true);
-
-    seconds.textContent = '00';
-    minutes.textContent = '00';
-    hours.textContent = '00';
-    days.textContent = '00';
   }
 });
 
@@ -76,7 +71,7 @@ function startTimer() {
 
   timeDifference -= 1000;
 
-  if (seconds.textContent <= 0 && minutes.textContent <= 0) {
+  if (timeDifference <= 0) {
     iziToast.success({
       message: `Time end`,
       position: 'topRight',
@@ -90,13 +85,14 @@ function startTimer() {
     renderDate(formatDate);
   }
 }
-
-// Rendering date
+function addLeadingZero(value) {
+  return String(value).padStart(2, 0);
+}
 function renderDate(formatDate) {
-  seconds.textContent = formatDate.seconds;
-  minutes.textContent = formatDate.minutes;
-  hours.textContent = formatDate.hours;
-  days.textContent = formatDate.days;
+  seconds.textContent = addLeadingZero(formatDate.seconds);
+  minutes.textContent = addLeadingZero(formatDate.minutes);
+  hours.textContent = addLeadingZero(formatDate.hours);
+  days.textContent = addLeadingZero(formatDate.days);
 }
 
 function convertMs(ms) {
